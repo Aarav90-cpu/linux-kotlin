@@ -1,16 +1,9 @@
 # SPDX-License-Identifier: GPL-2.0
 VERSION = 7
-<<<<<<< HEAD
-PATCHLEVEL = 1
-SUBLEVEL = 0
-EXTRAVERSION = -rc4
-NAME = Baby Opossum Posse
-=======
 PATCHLEVEL = 0
 SUBLEVEL = 9
 EXTRAVERSION = -zen
 NAME = Channeling Inner Peace for Peak Performance
->>>>>>> 7fb39c93c52e (Sync)
 
 # *DOCUMENTATION*
 # To see a list of typical targets execute "make help"
