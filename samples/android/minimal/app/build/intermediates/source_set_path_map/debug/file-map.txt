@@ -1,0 +1,7 @@
+kernel.kotlin.system.app-pngs-0 /home/aarav/linux-kotlin/samples/android/minimal/app/build/generated/res/pngs/debug
+kernel.kotlin.system.app-resValues-1 /home/aarav/linux-kotlin/samples/android/minimal/app/build/generated/res/resValues/debug
+kernel.kotlin.system.app-packageDebugResources-2 /home/aarav/linux-kotlin/samples/android/minimal/app/build/intermediates/incremental/debug/packageDebugResources/merged.dir
+kernel.kotlin.system.app-packageDebugResources-3 /home/aarav/linux-kotlin/samples/android/minimal/app/build/intermediates/incremental/debug/packageDebugResources/stripped.dir
+kernel.kotlin.system.app-merged_res-4 /home/aarav/linux-kotlin/samples/android/minimal/app/build/intermediates/merged_res/debug
+kernel.kotlin.system.app-debug-5 /home/aarav/linux-kotlin/samples/android/minimal/app/src/debug/res
+kernel.kotlin.system.app-main-6 /home/aarav/linux-kotlin/samples/android/minimal/app/src/main/res
